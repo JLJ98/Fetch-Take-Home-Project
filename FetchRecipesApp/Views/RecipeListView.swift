@@ -5,13 +5,20 @@
 //  Created by Jon-Luke Jenkins on 11/30/24.
 //
 //
+//
+//  RecipeListView.swift
+//  FetchRecipesApp
+//
+//  Created by Jon-Luke Jenkins on 11/30/24.
+//
+
 import SwiftUI
 
 struct RecipeListView: View {
     @State private var recipes: [Recipe] = []
     @State private var isLoading = true
     @State private var errorMessage: String? = nil
-
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -50,58 +57,25 @@ struct RecipeListView: View {
             }
         }
     }
-
-    // Refactor to async/await
+    
+    
     private func fetchRecipes() async {
         isLoading = true
         do {
-            let fetchedRecipes = try await NetworkingManager.shared.fetchRecipes() // Await the async fetch
+            let fetchedRecipes = try await NetworkingManager.shared.fetchRecipes()
             self.recipes = fetchedRecipes
+        } catch NetworkError.invalidURL {
+            self.errorMessage = "Invalid URL. Please try again later."
+        } catch NetworkError.noData {
+            self.errorMessage = "No data found. Please check your connection."
+        } catch NetworkError.decodingError {
+            self.errorMessage = "Failed to decode the recipe data."
+        } catch NetworkError.serverError(let message) {
+            self.errorMessage = "Server error: \(message)"
         } catch {
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = "An unknown error occurred."
         }
         isLoading = false
     }
-}
-
-struct RecipeRow: View {
-    let recipe: Recipe
-
-    var body: some View {
-        HStack {
-            if let photoURL = recipe.photoURLSmall, let url = URL(string: photoURL) {
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                        .scaledToFill()
-                        .frame(width: 70, height: 70)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                } placeholder: {
-                    ProgressView()
-                }
-            } else {
-                Image(systemName: "photo")
-                    .resizable()
-                    .frame(width: 70, height: 70)
-                    .foregroundColor(.gray)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(recipe.name)
-                    .font(.headline)
-                    .lineLimit(1) // Ensures title is truncated if too long
-                Text(recipe.cuisine)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-            }
-            .padding(.leading, 10)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-struct RecipeListView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecipeListView()
-    }
+    
 }
