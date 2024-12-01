@@ -4,7 +4,7 @@ enum NetworkError: Error {
     case invalidURL
     case noData
     case decodingError
-    case serverError(String) // For HTTP error responses
+    case serverError(String)
     case unknownError
 }
 
@@ -27,10 +27,15 @@ class NetworkingManager {
             let (data, response) = try await URLSession.shared.data(from: url)
             
             // Check the HTTP response status
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                throw NetworkError.serverError("Server returned an error")
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw NetworkError.serverError("Invalid response from the server")
             }
-            
+
+            // Check for successful HTTP status code (200 OK)
+            guard httpResponse.statusCode == 200 else {
+                throw NetworkError.serverError("Server returned error: HTTP \(httpResponse.statusCode)")
+            }
+
             // If there is data, decode it into the model
             if !data.isEmpty {
                 do {
@@ -44,7 +49,11 @@ class NetworkingManager {
             }
         } catch {
             // Handle network failure or unexpected errors
-            throw NetworkError.unknownError
+            if let urlError = error as? URLError {
+                throw NetworkError.serverError("Network error: \(urlError.localizedDescription)")
+            } else {
+                throw NetworkError.unknownError // Generic unknown error
+            }
         }
     }
 }

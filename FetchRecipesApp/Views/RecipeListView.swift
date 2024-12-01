@@ -22,13 +22,22 @@ struct RecipeListView: View {
     var body: some View {
         NavigationView {
             VStack {
+                // Show progress indicator if loading
                 if isLoading {
                     ProgressView("Loading recipes...")
                         .progressViewStyle(CircularProgressViewStyle(tint: .red))
                         .padding(.top, 50)
-                } else if let errorMessage = errorMessage {
+                }
+                // Show error message if there's an error
+                else if let errorMessage = errorMessage {
                     Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
+                        .padding()
+                }
+                // Show the recipe list or empty state
+                else if recipes.isEmpty {
+                    Text("No recipes available.")
+                        .font(.headline)
                         .padding()
                 } else {
                     List(recipes) { recipe in
@@ -58,7 +67,6 @@ struct RecipeListView: View {
         }
     }
     
-    
     private func fetchRecipes() async {
         isLoading = true
         do {
@@ -77,5 +85,10 @@ struct RecipeListView: View {
         }
         isLoading = false
     }
-    
+}
+
+struct RecipeListView_Previews: PreviewProvider {
+    static var previews: some View {
+        RecipeListView()
+    }
 }
