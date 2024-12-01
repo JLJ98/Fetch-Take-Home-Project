@@ -27,18 +27,22 @@ struct RecipeListView: View {
                     ProgressView("Loading recipes...")
                         .progressViewStyle(CircularProgressViewStyle(tint: .red))
                         .padding(.top, 50)
+                        .accessibilityIdentifier("loadingIndicator") // Add an identifier for testing
+                        .accessibilityLabel("Loading recipes...") // Optional: for better accessibility
                 }
                 // Show error message if there's an error
                 else if let errorMessage = errorMessage {
                     Text("Error: \(errorMessage)")
                         .foregroundColor(.red)
                         .padding()
+                        .accessibilityIdentifier("errorMessage") // Accessibility identifier for the error message
                 }
                 // Show the recipe list or empty state
                 else if recipes.isEmpty {
                     Text("No recipes available.")
                         .font(.headline)
                         .padding()
+                        .accessibilityIdentifier("noRecipesMessage")  // Accessibility identifier for empty state
                 } else {
                     List(recipes) { recipe in
                         NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
@@ -50,6 +54,8 @@ struct RecipeListView: View {
                                         .shadow(radius: 8)
                                 )
                                 .padding([.leading, .trailing], 15)
+                                .accessibilityIdentifier("recipeRow") // Identifier for recipe row
+                                .accessibilityLabel(recipe.name) // Optional: better accessibility
                         }
                     }
                     .listStyle(PlainListStyle())

@@ -1,6 +1,6 @@
 import Foundation
 
-enum NetworkError: Error {
+enum NetworkError: Error, Equatable {
     case invalidURL
     case noData
     case decodingError
@@ -10,8 +10,9 @@ enum NetworkError: Error {
 
 class NetworkingManager {
     static let shared = NetworkingManager()
-
-    private init() {}
+    
+    // Public initializer for testing purposes
+        public init() {}
 
     // Fetch recipes using async/await and improved error handling
     func fetchRecipes() async throws -> [Recipe] {

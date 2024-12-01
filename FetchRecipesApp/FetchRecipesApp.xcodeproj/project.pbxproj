@@ -57,11 +57,6 @@
 			path = FetchRecipesAppTests;
 			sourceTree = "<group>";
 		};
-		49AED42A2CFB9E22006E4413 /* FetchRecipesAppUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = FetchRecipesAppUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +92,6 @@
 				49AED43D2CFB9F43006E4413 /* Models */,
 				49AED43A2CFB9EC9006E4413 /* Utils */,
 				49AED4202CFB9E22006E4413 /* FetchRecipesAppTests */,
-				49AED42A2CFB9E22006E4413 /* FetchRecipesAppUITests */,
-				49AED44F2CFBB9EA006E4413 /* Frameworks */,
 				49AED40E2CFB9E20006E4413 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -147,13 +140,6 @@
 				49AED4422CFBA00D006E4413 /* RecipeListView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		49AED44F2CFBB9EA006E4413 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,9 +202,6 @@
 			);
 			dependencies = (
 				49AED4292CFB9E22006E4413 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				49AED42A2CFB9E22006E4413 /* FetchRecipesAppUITests */,
 			);
 			name = FetchRecipesAppUITests;
 			packageProductDependencies = (
