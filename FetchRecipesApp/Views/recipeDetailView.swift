@@ -6,24 +6,34 @@
 //
 import SwiftUI
 
-
 struct RecipeDetailView: View {
     let recipe: Recipe
+    @State private var largeImage: UIImage? = nil
     @State private var showAlert = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                // Recipe image
+                // Recipe image with caching
                 if let photoURL = recipe.photoURLLarge, let url = URL(string: photoURL) {
-                    AsyncImage(url: url) { image in
-                        image.resizable()
+                    if let image = largeImage {
+                        Image(uiImage: image)
+                            .resizable()
                             .aspectRatio(contentMode: .fit)
-                    } placeholder: {
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    } else {
                         ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .onAppear {
+                                // Fetch and cache the image
+                                ImageFetcher.fetchImage(from: url) { fetchedImage in
+                                    self.largeImage = fetchedImage
+                                }
+                            }
                     }
-                    .frame(maxWidth: .infinity)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                } else {
+                    Text("Image not available.")
+                        .foregroundColor(.gray)
                 }
 
                 // Recipe name
@@ -97,4 +107,3 @@ struct RecipeDetailView: View {
         return url.contains("youtube.com/watch") || url.contains("youtu.be")
     }
 }
-
