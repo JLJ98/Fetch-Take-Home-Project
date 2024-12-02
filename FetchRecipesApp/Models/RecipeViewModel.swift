@@ -6,40 +6,58 @@
 //
 
 import Foundation
+import SwiftUI
 
 class RecipeViewModel: ObservableObject {
     @Published var recipes: [Recipe] = []
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
 
-    private let networkingManager = NetworkingManager.shared
+    private let networkingManager: NetworkingManager
 
-    // Fetch recipes using async/await
+    init(networkingManager: NetworkingManager = NetworkingManager.shared) {
+        self.networkingManager = networkingManager
+    }
+
     func fetchRecipes() async {
         isLoading = true
-        errorMessage = nil  // Clear any previous error message
+        errorMessage = nil
 
         do {
             let fetchedRecipes = try await networkingManager.fetchRecipes()
-            self.recipes = fetchedRecipes
+            DispatchQueue.main.async {
+                self.recipes = fetchedRecipes
+                self.isLoading = false
+            }
         } catch let error as NetworkError {
-            // Handle specific NetworkError cases with user-friendly messages
-            switch error {
-            case .invalidURL:
-                self.errorMessage = "The URL is invalid. Please try again later."
-            case .noData:
-                self.errorMessage = "No data was returned from the server."
-            case .decodingError:
-                self.errorMessage = "There was an issue processing the recipe data."
-            case .serverError(let message):
-                self.errorMessage = message
-            case .unknownError:
-                self.errorMessage = "An unknown error occurred. Please try again later."
+            DispatchQueue.main.async {
+                self.errorMessage = self.mapError(error)
+                self.isLoading = false
             }
         } catch {
-            self.errorMessage = "Unexpected error: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                self.errorMessage = "An unknown error occurred."
+                self.isLoading = false
+            }
         }
+    }
 
-        isLoading = false
+    private func mapError(_ error: NetworkError) -> String {
+        switch error {
+        case .invalidURL:
+            return "The URL is invalid. Please try again later."
+        case .noData:
+            return "No data was returned from the server."
+        case .decodingError:
+            return "There was an issue processing the recipe data."
+        case .serverError(let message):
+            return message
+        case .emptyData:
+            return "No recipes available."
+        case .malformedData:
+            return "The data returned was malformed."
+        case .unknownError:
+            return "An unknown error occurred."
+        }
     }
 }
