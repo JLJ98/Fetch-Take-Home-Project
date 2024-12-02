@@ -3,14 +3,14 @@
 
 # Steps to Run the App
 
-Clone this repository to your local machine using git clone.
-Open the project in Xcode by double-clicking the .xcodeproj file or .xcworkspace file (if applicable).
-Ensure your system meets the following requirements:
-Xcode version: 14.0 or later.
-iOS Deployment Target: iOS 13.0 or later.
-Select a simulator or connected device in Xcode.
-Build and run the app using the Run button (Cmd+R).
-The app will display a list of recipes fetched from the API endpoint. Tap a recipe to view its details.
+1. Clone this repository to your local machine using git clone.
+2. Open the project in Xcode by double-clicking the .xcodeproj file or .xcworkspace file (if applicable).
+3. Ensure your system meets the following requirements:
+4. Xcode version: 14.0 or later.
+5. iOS Deployment Target: iOS 13.0 or later.
+6. Select a simulator or connected device in Xcode.
+7. Build and run the app using the Run button (Cmd+R).
+8. The app will display a list of recipes fetched from the API endpoint. Tap a recipe to view its details.
 
 #Focus Areas
 
