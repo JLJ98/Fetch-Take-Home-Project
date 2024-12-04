@@ -41,6 +41,7 @@ Debugging, testing, and polishing: 1 hour.
 Custom Image Caching vs. Libraries: I initially tried Kingfisher and SDWebImage but ultimately implemented a custom caching solution to meet specific requirements (e.g., avoiding reliance on HTTP caching). This decision added complexity but ensured fine-grained control.
 Focus on Core Requirements: I focused on achieving the core functionality instead of adding advanced features like search or filtering to prioritize stability and clarity.
 UI Simplicity vs. Customization: The UI is clean but not overly complex. Some advanced animations or transitions were skipped to keep the focus on functionality.
+
 #Weakest Part of the Project
 
 UI Consistency: While visually appealing, the random background colors on recipe rows might make the UI feel inconsistent. Additionally, some text on lighter backgrounds could still be hard to read despite efforts to adjust the colors.
@@ -49,7 +50,7 @@ Testing: While I included unit tests for key components, I could add more compre
 
 #External Code and Dependencies
 
-Kingfisher (attempted but not used): Initially explored for image caching but decided to implement a custom solution to meet project requirements.
+Initially explored Kingfisher for image caching but after further review of the project requirements I implemented a custom solution.
 Custom Utilities:
 ImageFetcher for fetching and caching images.
 ImageCacheManager for managing in-memory and disk-based caching.
