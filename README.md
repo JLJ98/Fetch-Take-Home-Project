@@ -38,7 +38,7 @@ Debugging, testing, and polishing: 1 hour.
 
 #Trade-offs and Decisions
 
-Custom Image Caching vs. Libraries: I initially tried Kingfisher and SDWebImage but ultimately implemented a custom caching solution to meet specific requirements (e.g., avoiding reliance on HTTP caching). This decision added complexity but ensured fine-grained control.
+Custom Image Caching vs. Libraries: I initially tried Kingfisher but ultimately implemented a custom caching solution to meet specific requirements (e.g., avoiding reliance on HTTP caching). This decision added complexity but ensured fine-grained control.
 Focus on Core Requirements: I focused on achieving the core functionality instead of adding advanced features like search or filtering to prioritize stability and clarity.
 UI Simplicity vs. Customization: The UI is clean but not overly complex. Some advanced animations or transitions were skipped to keep the focus on functionality.
 
